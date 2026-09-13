@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-TW">
+    <head>
+        <meta charset="UTF-8" >
+    </head>
+    <body>
+        <input id="payingTime" placeholder="打了幾分鐘">
+        <input id="beenpaid" placeholder="消費多少">
+        <button id="resultPress">測驗按下去</button>
+        <p id="output">outcome</p>
+        <script>
+            function calctTableFee2(time){
+                const special = Math.floor(time/30);
+                const restMoney = time%30;
+                const resultMoney = special*50 + restMoney*2;
+                return  resultMoney;
+            }
+            function calcTotal(time,spendingInput){
+                const mainFee = Number(calctTableFee2(time))+ spendingInput;
+                return  mainFee;
+            }
+            document.querySelector("#resultPress").onclick = function(){
+                 let time = Number(document.querySelector("#payingTime").value);
+                 let spendingInput = Number(document.querySelector("#beenpaid").value);
+                 const result = calcTotal(time, spendingInput)
+                  document.querySelector("#output").textContent =`需要付 ${result}` 
+            }
+           
+        </script>
+
+
+
+
+    </body>
+
+
+
+
+</html>

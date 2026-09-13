@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+        <body>
+            <input id="timeInput" type="number" placeholder="打了幾分鐘">
+            <input id="spendingInput" type="number" placeholder="消費金額">
+            <button id="calcBtn">計算</button>
+            <script>
+                function calcTableFee(time){
+                    const count30 = Math.floor(time/30);
+                    const timeRemain = time % 30;
+                    return count30*50 + timeRemain*2;
+                    }
+
+                function calcTotal(time, spending){
+                    const tableFee = calcTableFee(time);
+                    const total =  tableFee + spending; 
+                    const bill = {tableFee,total,spending};
+                    return bill;
+                    }
+                 document.querySelector('#calcBtn').onclick = function() {
+                const time = Number(document.querySelector("#timeInput").value);        // 抓 timeInput 的值，記得轉數字
+                const spending = Number(document.querySelector("#spendingInput").value); 
+                const result =  calcTotal(time, spending);
+                 document.querySelector('#output').textContent = result.total;
+                }
+             </script>
+            <p id="output">outcome</p>
+        </body>
+
+</html>
