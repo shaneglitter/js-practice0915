@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>
+    <meta charset ="UTF-8">
+</head>
+<body>
+    <p>BMI設計</p>
+    
+    <div class = "weight01">
+      輸入你的體重
+    </div>
+    <input type="number" id="theWeight" placeholder="以公斤(kg)為單位"/><br>
+    <div class = "high01">輸入你的身高</div>
+    <input type="number" id="theHigh" placeholder="以公尺(m)為單位"/>
+    <button onclick = "bmiPress()">BMI按鈕</button><br>
+    <div id="theResult"></div>
+    <script>
+        
+        function bmiPress(){
+            const weight =Number(document.querySelector("#theWeight").value) ;
+            const height =Number(document.querySelector("#theHigh").value);
+            if (!weight || !height) {
+             document.querySelector("#theResult").textContent = "請輸入有效的身高體重";
+             return;}
+            const bmi = (Math.floor(weight/height/height*10))/10;
+            let level;
+            if (bmi < 18.5) {
+                level= "體重過輕";}
+            else if (bmi<24){
+                level ="體重正常";
+            }
+            else if (bmi<27){
+                level = "體重過重";
+            }
+            else {
+                level = "肥胖";
+            }
+            document.querySelector("#theResult").textContent = `你的 BMI 是 ${bmi}，${level}`;
+        }
+            
+            
+        
+    </script>
+
+</body>
+</html>
