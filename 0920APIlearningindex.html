@@ -1,28 +1,39 @@
-<!doctype html>
-<html lang="zh-tw">
+<!DOCTYPE html>
+<html lang="Zh-tw"> 
     <head>
         <meta charset="UTF-8">
-        <title>this is my first API learning work</title>
+        <title>0922重新練習版本</title>
     </head>
     <body>
-        <button id="loadBtn">載入使用者</button>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>名字</th>
-                    <th>Email</th>    
-            </tr>
-            </thead>
-            <tbody id="output">
-            </tbody>
+        <p>API 表格練習</p>
+        <button id="getRe">拿到資料</button>
+        <table>
+        <tr>
+            <th>名字</th><th>Email</th>
+        </tr>
+        <tbody id="user01">
+        <tr>
+        </tr>
+        </tbody>
         </table>
+        
         <script>
-            document.querySelector("#loadBtn").onclick = async function () {
-                const resource = await fetch("https://jsonplaceholder.typicode.com/users");
-                const outcome = await resource.json();
-                const output = outcome.map(user => `<tr><td>${user.name}</td><td>${user.email}</td></tr>`  ).join("")
-                 document.querySelector("#output").innerHTML = output 
-            }   
+            document.querySelector("#getRe").onclick = async function() {
+              const showWaiting = "<tr><td>載入中</td></tr>";
+              document.querySelector("#user01").innerHTML = showWaiting;
+              
+              try{
+            const res =  await fetch("https://jsonplaceholder.typicode.com/users");
+              if (!res.ok) {
+                throw new Error(`Failed:${res.status}`);
+                }
+             const newUser = await res.json();
+             const output = newUser.map(user=>`<tr><td>${user.name}</td><td>${user.email}</td></tr>`).join("");
+             document.querySelector("#user01").innerHTML = output;
+            }
+             catch(err){document.querySelector("#user01").innerHTML= `<tr><td>${err}</td></tr>`};
+             
+        }  
         </script>
     </body>
 </html>

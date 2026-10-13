@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        
+        <p id="loading"></p>
+        <button id="getRe">按鈕</button>
+        <div id="detail"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>收藏</th>
+                    <th>車站名</th>
+                    <th>地址</th>
+                </tr>
+            </thead>
+            <tbody id="stationItem">
+
+            </tbody>
+        </table>
+        <script>
+            let fav = JSON.parse(localStorage.getItem("fav"))||[];
+            let transfer;
+            document.querySelector("#getRe").addEventListener("click",async function (){
+                 try{
+                
+                 document.querySelector("#loading").textContent = "載入中";
+                 const URL = await fetch("https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/Station?%24top=10&%24format=JSON");
+                 if (!URL.ok){throw new Error(`本次載入失敗 ${URL.status}`)};
+                 const result = await URL.json();
+                
+                 const html =  result.map(TRA => `<tr data-id="${TRA.StationID}"><td class="fav">${fav.includes(TRA.StationID)?"★":"☆"}</td><td>${TRA.StationID}</td><td>${TRA.StationAddress}</td></tr>`).join("");
+                 document.querySelector("#stationItem").innerHTML = html;
+                 transfer = result;
+                 document.querySelector("#loading").textContent = "已完成";
+                 
+                }
+
+                
+             catch(err){
+                document.querySelector("#loading").innerHTML = err.message;
+                        }
+            });
+           
+            
+            document.querySelector("#stationItem").addEventListener("click", function(event){
+                const row = event.target.closest("tr");
+                 if(!row){
+                    return;
+                };
+                 const id = row.dataset.id;
+                const isStar = event.target.classList.contains("fav")
+                if (isStar){
+                    if(fav.includes(id)){
+                        fav = fav.filter(x=> x !==id);
+                    }
+                    else{
+                       fav.push(id);
+                    }
+                    localStorage.setItem("fav",JSON.stringify(fav));
+                    event.target.textContent = fav.includes(id)? "★":"☆";
+                    return;
+                };
+               
+                const fit = transfer.find(TRA=> TRA.StationID ===id);
+                const output = `<p>車站電話:${fit.StationPhone}</P><br><a href ="${fit.StationURL}" target="_blank">官方網站網址</a>`;
+                document.querySelector("#detail").innerHTML = output;
+               
+            })
+            
+        </script>
+    </body>
+
+</html>

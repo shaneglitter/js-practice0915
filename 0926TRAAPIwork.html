@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <button id="getRe">"取得資料"</button>
+        <P id="failed"></P>
+        <div id="detail"></div>
+        <table>
+            <thead>
+                <th>車站ID</th>
+                <th>車站地址</th>
+                <th>車站名稱</th>
+            </thead>
+            <tbody id="output">
+
+            </tbody>
+        </table>
+        <script>
+            let stations;
+            document.querySelector("#getRe").addEventListener("click", async function () {
+                
+           // document.querySelector("#getRe").onclick = async function getResource(){
+                document.querySelector("#failed").textContent = "loading...";
+                try{
+                    const getRe = await fetch("https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/Station?%24top=10&%24format=JSON");
+                    if(!getRe.ok) throw new Error(`Failed(失敗):${getRe.status}`);
+                    const data =  await getRe.json();
+                    const html = data.Stations.map(TRA => `<tr data-id="${TRA.StationID}"><td>${TRA.StationID}</td><td>${TRA.StationAddress}</td><td>${TRA.StationName.Zh_tw}</td></tr>`).join("");
+                    document.querySelector("#output").innerHTML =html;
+                    document.querySelector("#failed").textContent = "";
+                    stations = data.Stations;
+                }         
+               
+                catch(err){
+                 document.querySelector("#failed").innerHTML = err.message;
+                }
+                
+            });
+            document.querySelector("#output").addEventListener("click", function (event) {
+                const row = event.target.closest("tr");
+                const id = row.dataset.id;
+                const station = stations.find(TRA=>TRA.StationID ===id);
+             console.log("被點的：", event.target);
+             console.log("那一列：", event.target.closest("tr"));
+             console.log(station);
+             document.querySelector("#detail").innerHTML=`<h3>${station.StationName.Zh_tw}</h3>
+             <p>電話:${station.StationPhone}</p>
+             <p>座標:${station.StationPosition.PositionLon},${station.StationPosition.PositionLat}</p>
+             <p><a href="${station.StationURL}" target="_blank">車站官網</a></p>`
+            });
+        </script>
+    </body>
+</html>

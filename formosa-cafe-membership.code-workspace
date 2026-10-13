@@ -1,0 +1,27 @@
+{
+	"folders": [
+		{
+			"name": "formosa-cafe-membership",
+			"path": "../../../OneDrive/Desktop/Pooltable 程式/formosa-cafe-membership"
+		},
+		{
+			"name": "cpp-learning",
+			"path": "../../../../../dev/cpp-learning"
+		},
+		{
+			"path": "../../../OneDrive/Desktop/Pooltable 程式/membership"
+		},
+		{
+			"path": "../../../OneDrive/Desktop/code"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../ReactTraining"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "0926learningProccess"
+	}
+}
