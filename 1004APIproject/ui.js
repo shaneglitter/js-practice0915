@@ -3,5 +3,5 @@ export function renderTable(train,fav,){
      document.querySelector("#result").innerHTML = html
 };
 export function renderDetail(fit){
-    document.querySelector("#detail").innerHTML =`<p>${fit.StationPosition.PositionLon},${fit.StationPosition.PositionLat}</p><p>${fit.StationName.Zh_tw}</p>`;
+    document.querySelector("#detail").innerHTML =`<p>${fit.StationPosition.PositionLon},${fit.StationPosition.PositionLat}</p><p>${fit.StationName.Zh_tw}</p><a href="https://www.google.com/maps?q=${fit.StationPosition.PositionLat},${fit.StationPosition.PositionLon}" target="_blank">google map位置</a>`;
 };
