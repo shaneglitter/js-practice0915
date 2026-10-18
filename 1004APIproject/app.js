@@ -25,22 +25,30 @@ import { renderTable,renderDetail } from "./ui.js";
             if (isStar){
                 switchStar(id);
                 event.target.textContent = detectStar(id)?"★":"☆";
+                
                 return;
             }
+            const fit =  outcome.find(station => station.StationID ===id );
+            renderDetail(fit);
             });
             
                        
-                const fit =  outcome.find(station => station.StationID ===id );
-                renderDetail(fit);
+            
          
            document.querySelector("#searchList").addEventListener("change", function(event){
                 if(!outcome){return};
-                const selectedCity = event.target.value
-                if(!selectedCity){
-                    let train = outcome
-                    renderTable(train,fav)
-                return}
-                const corresponse = outcome.filter(re=>re.LocationCity === selectedCity);
-                let train = corresponse
+               applyFilters(event);
+               return
+            });
+           document.querySelector("#search").addEventListener("input", function(event){
+               applyFilters(event);
+                return;
+            }); 
+           function applyFilters(event){
+                const searchOutcome = document.querySelector("#search").value
+                const searchListoutcome = document.querySelector("#searchList").value
+                if(!outcome){return};
+                const showResult = outcome.filter(re=>re.StationName.Zh_tw.includes(searchOutcome) && (!searchListoutcome||re.LocationCity === searchListoutcome));
+                let train = showResult
                 renderTable(train,fav);
-           })
+            };
