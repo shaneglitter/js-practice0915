@@ -27,20 +27,20 @@ import { renderTable,renderDetail } from "./ui.js";
                 event.target.textContent = detectStar(id)?"★":"☆";
                 return;
             }
+            });
             
                        
-            const fit =  outcome.find(station => station.StationID ===id );
-           renderDetail(fit);
-           document.querySelector("#searchList").addEventListener("change",async function(event){
-            console.log(outcome[0])
-            const theList = event.target.value
-            console.log(theList);
-            const corresponse = outcome.LocationCity.include(theList);
-            return corresponse
-
-            
-
-
-
+                const fit =  outcome.find(station => station.StationID ===id );
+                renderDetail(fit);
+         
+           document.querySelector("#searchList").addEventListener("change", function(event){
+                if(!outcome){return};
+                const selectedCity = event.target.value
+                if(!selectedCity){
+                    let train = outcome
+                    renderTable(train,fav)
+                return}
+                const corresponse = outcome.filter(re=>re.LocationCity === selectedCity);
+                let train = corresponse
+                renderTable(train,fav);
            })
-           });
